@@ -1,0 +1,51 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+}
+
+group = 'com.neklo.flink'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '8'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation('org.apache.flink:flink-java:1.9.1')
+    implementation 'org.apache.flink:flink-streaming-java_2.12:1.9.1'
+
+    implementation 'org.apache.flink:flink-clients_2.12:1.9.1'
+    implementation('org.apache.flink:flink-connector-rabbitmq_2.12:1.9.1') {
+        exclude group: 'com.rabbitmq', module: 'amqp-client'
+    }
+    implementation 'com.rabbitmq:amqp-client:4.2.0'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    //compile 'de.javakaffee:kryo-serializers:0.30'
+    //compile group: 'com.esotericsoftware', name: 'kryo', version: '4.0.2'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.integration:spring-integration-test'
+}
+
+test {
+    useJUnitPlatform()
+}
